@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "459135232777",
+    "firebase_url": "https://suuqa-167a5.firebaseio.com",
+    "project_id": "suuqa-167a5",
+    "storage_bucket": "suuqa-167a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459135232777:android:abbf2bf23bc2f3f9",
+        "android_client_info": {
+          "package_name": "app.suuqa.suuqa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459135232777-cu17i5dgqr5oakgnfc9ra4i8ir7ua6jb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.suuqa.suuqa",
+            "certificate_hash": "a25eadc955bb0d85f1599eda7f9bd2883c986b50"
+          }
+        },
+        {
+          "client_id": "459135232777-n9mrcono52fdlb2j2i2juolavtc5hgmq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz-dwdflg3IT_1mIGyiiTAi7e0fZmyP5k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459135232777-n9mrcono52fdlb2j2i2juolavtc5hgmq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "459135232777-kt35s5nahp2gts446ggsuf9i6kuks08l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.suuqa.suuqa"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
