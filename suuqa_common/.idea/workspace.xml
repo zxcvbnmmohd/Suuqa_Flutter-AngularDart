@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ae64d31-0c28-42f8-b213-6a76b78bb1a6" name="Default Changelist" comment="" />
+    <list default="true" id="9ae64d31-0c28-42f8-b213-6a76b78bb1a6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../suuqa_angular/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../suuqa_angular/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../suuqa_firebase/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../suuqa_firebase/functions/src/index.ts" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -267,7 +271,7 @@
   <component name="ToolWindowManager">
     <frame x="1440" y="912" width="1440" height="888" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
       <window_info id="Structure" order="1" side_tool="true" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -277,11 +281,11 @@
       <window_info anchor="bottom" id="Run" order="1" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
-      <window_info anchor="bottom" id="Terminal" order="4" weight="0.32997033" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="4" visible="true" weight="0.32914573" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Flutter Performance" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="8" visible="true" weight="0.32914573" />
+      <window_info anchor="bottom" id="Messages" order="8" weight="0.32914573" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
       <window_info anchor="right" id="Flutter Inspector" order="2" />
