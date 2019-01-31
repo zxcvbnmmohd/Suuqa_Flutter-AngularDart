@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:suuqa_common/suuqa_common.dart';
 import 'package:suuqa/src/functions.dart';
 import 'package:suuqa/src/pages/home/tabs/feed/search/search.dart';
-import 'package:suuqa/src/pages/home/tabs/feed/search/search_feed.dart';
 import 'package:suuqa/src/pages/home/tabs/feed/filter.dart';
 import 'package:suuqa/src/widgets/essentials/empty_list.dart';
 import 'package:suuqa/src/widgets/lists/list/feed_list.dart';
@@ -12,6 +11,7 @@ import 'package:suuqa/src/widgets/platform_aware/pa_scaffold.dart';
 
 class CategoryFeed extends StatefulWidget {
   final String category;
+  final List<Address> addresses;
   final int addressIndex;
   final double radius;
   final int limitTo;
@@ -19,7 +19,15 @@ class CategoryFeed extends StatefulWidget {
   final double priceMax;
   final int sortBy;
 
-  CategoryFeed({this.category, this.addressIndex, this.radius, this.limitTo, this.priceMin, this.priceMax, this.sortBy});
+  CategoryFeed(
+      {this.category,
+      this.addresses,
+      this.addressIndex,
+      this.radius,
+      this.limitTo,
+      this.priceMin,
+      this.priceMax,
+      this.sortBy});
 
   @override
   _CategoryFeedState createState() => _CategoryFeedState();
@@ -27,19 +35,18 @@ class CategoryFeed extends StatefulWidget {
 
 class _CategoryFeedState extends State<CategoryFeed> {
   String _category;
-  int _addressIndex;
-  double _radius;
-  int _limitTo;
-  double _priceMin;
-  double _priceMax;
-  int _sortBy;
+  List<Address> _addresses = [];
+  int _addressIndex, _limitTo, _sortBy;
+  double _radius, _priceMin, _priceMax;
   List<Product> _products = [];
 
   @override
   void initState() {
     super.initState();
+
     this._initVariables(
         category: widget.category,
+        addresses: widget.addresses,
         addressIndex: widget.addressIndex,
         radius: widget.radius,
         limitTo: widget.limitTo,
@@ -51,7 +58,8 @@ class _CategoryFeedState extends State<CategoryFeed> {
         products: this._products,
         limitTo: this._limitTo,
         priceMin: this._priceMin,
-        priceMax: this._priceMax);
+        priceMax: this._priceMax,
+        sortBy: this._sortBy);
   }
 
   @override
@@ -80,20 +88,27 @@ class _CategoryFeedState extends State<CategoryFeed> {
               Functions.popup(
                   context: context,
                   w: Filter(
+                    addresses: this._addresses,
                     addressIndex: this._addressIndex,
                     radius: this._radius,
                     priceMin: this._priceMin,
                     priceMax: this._priceMax,
                     sortBy: this._sortBy,
-                    onTap: (aIndex, radius, pMin, pMax, sortBy) {
+                    onTap: (index, radius, pMin, pMax, sortBy) {
                       setState(() {
-                        this._addressIndex = aIndex;
+                        this._addressIndex = index;
                         this._radius = radius;
                         this._priceMin = pMin;
                         this._priceMax = pMax;
                         this._sortBy = sortBy;
                       });
-//                      this._initProducts();
+                      this._initProductsIn(
+                          category: this._category,
+                          products: this._products,
+                          limitTo: this._limitTo,
+                          priceMin: this._priceMin,
+                          priceMax: this._priceMax,
+                          sortBy: this._sortBy);
                       Navigator.pop(context);
                     },
                   ));
@@ -105,12 +120,7 @@ class _CategoryFeedState extends State<CategoryFeed> {
             onPressed: () {
               Functions.popup(
                   context: context,
-                  w: Search(onSubmitted: (s) {
-                    s.length == 0
-                        ? Navigator.pop(context)
-                        : Functions.navigateTo(context: context, w: SearchFeed(search: s), fullscreenDialog: false);
-                    Navigator.pop(context);
-                  }));
+                  w: Search());
             },
           ),
         ],
@@ -122,9 +132,17 @@ class _CategoryFeedState extends State<CategoryFeed> {
   // MARK - Functions
 
   _initVariables(
-      {String category, int addressIndex, double radius, int limitTo, double priceMin, double priceMax, int sortBy}) {
+      {String category,
+      List<Address> addresses,
+      int addressIndex,
+      double radius,
+      int limitTo,
+      double priceMin,
+      double priceMax,
+      int sortBy}) {
     setState(() {
       this._category = category;
+      this._addresses = addresses;
       this._addressIndex = addressIndex;
       this._radius = radius;
       this._limitTo = limitTo;

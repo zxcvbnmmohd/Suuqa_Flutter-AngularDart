@@ -5,7 +5,6 @@ import 'package:suuqa_common/suuqa_common.dart';
 import 'package:suuqa/src/functions.dart';
 import 'package:suuqa/src/pages/home/tabs/feed/camera/camera.dart';
 import 'package:suuqa/src/pages/home/tabs/feed/search/search.dart';
-import 'package:suuqa/src/pages/home/tabs/feed/search/search_feed.dart';
 import 'package:suuqa/src/pages/home/tabs/feed/filter.dart';
 import 'package:suuqa/src/widgets/essentials/categories.dart';
 import 'package:suuqa/src/widgets/essentials/empty_list.dart';
@@ -26,12 +25,8 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   List<Address> _addresses = [];
-  int _addressIndex;
-  double _radius;
-  int _limitTo;
-  double _priceMin;
-  double _priceMax;
-  int _sortBy;
+  int _addressIndex, _limitTo, _sortBy;
+  double _radius, _priceMin, _priceMax;
   List<Product> _products = [];
 
   @override
@@ -39,20 +34,18 @@ class _FeedState extends State<Feed> {
     super.initState();
 
     if (widget.cUser == null) {
-      Functions.showAutoComplete(onSuccess: (p) {
-        setState(() {
-          this._addresses.add(Address(
-              type: 'Your Location',
-              short: p.name,
-              long: p.address,
-              geoPoint: Address().toGeoPoint(p.latitude, p.longitude)));
-        });
-      });
+//      Functions.showAutoComplete(onSuccess: (p) {
+//        this._addresses.add(Address(
+//            type: 'Your Location',
+//            short: p.name,
+//            long: p.address,
+//            geoPoint: Address().toGeoPoint(p.latitude, p.longitude)));
+//      });
     } else {
       this._addresses = widget.cUser.addresses;
     }
 
-    this._initVariables(addressIndex: 0, radius: 10.0, limitTo: 15, priceMin: 0.0, priceMax: 9999.0, sortBy: 0);
+    this._initVariables(addressIndex: 0, radius: 10.0, limitTo: 15, priceMin: 0.0, priceMax: 9999.0, sortBy: 1);
     this._initProducts(
         products: this._products,
         limitTo: this._limitTo,
@@ -63,21 +56,36 @@ class _FeedState extends State<Feed> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> w = [
-      Section(text: 'Categories'),
-      Categories(),
-      Section(text: 'Feed'),
-      this._products.length == 0
-          ? EmptyList(title: 'No Products', subtitle: 'Try Again...')
-          : FeedList(products: this._products),
-    ];
+    List<Widget> w = // this._addresses.isNotEmpty
+//        ? [
+//            Container(
+//              child: Column(
+//                children: <Widget>[],
+//              ),
+//            ),
+//          ]
+//        :
+    [
+            Section(text: 'Categories'),
+            Categories(
+                addresses: this._addresses,
+                addressIndex: this._addressIndex,
+                radius: this._radius,
+                limitTo: this._limitTo,
+                priceMin: this._priceMin,
+                priceMax: this._priceMax,
+                sortBy: this._sortBy),
+            Section(text: 'Feed'),
+            this._products.length == 0
+                ? EmptyList(title: 'No Products', subtitle: 'Try Again...')
+                : FeedList(products: this._products),
+          ];
 
     return PAScaffold(
         iOSLargeTitle: true,
-        iOSMiddle: true,
+        iOSMiddle: false,
         color: Config.bgColor,
-        title:
-            InheritedUser.of(context).isLoggedIn ? 'Hello, ${InheritedUser.of(context).user.name.split(" ")[0]}!' : 'Suuqa',
+        title: 'Suuqa',
         leading: Platform.isIOS ? Container() : null,
         middle: Text('', style: TextStyle(color: Config.tColor)),
         actions: <Widget>[
@@ -119,11 +127,14 @@ class _FeedState extends State<Feed> {
             onPressed: () {
               Functions.popup(
                   context: context,
-                  w: Search(onSubmitted: (s) {
-                    Navigator.pop(context);
-                    if (s.length == 0)
-                      Functions.navigateTo(context: context, w: SearchFeed(search: s), fullscreenDialog: false);
-                  }));
+                  w: Search(
+                    addresses: this._addresses,
+                    addressIndex: this._addressIndex,
+                    radius: this._radius,
+                    priceMin: this._priceMin,
+                    priceMax: this._priceMax,
+                    sortBy: this._sortBy,
+                  ));
             },
           ),
           InheritedUser.of(context).isLoggedIn

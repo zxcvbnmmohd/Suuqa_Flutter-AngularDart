@@ -22,13 +22,13 @@ class MultipleItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              height: 25.0,
+              margin: EdgeInsets.only(bottom: 5.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: Text(
                       this.product.title,
-                      style: TextStyle(color: Config.tColor, fontSize: 15.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Config.tColor, fontSize: 15.0, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -47,11 +47,14 @@ class MultipleItem extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Config.wColor,
-                          image: DecorationImage(image: NetworkImage(this.product.images[0]), fit: BoxFit.cover),
-                          borderRadius: Config.borderRadius,
+                      child: Hero(
+                        tag: this.product.productID,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            image: DecorationImage(image: NetworkImage(this.product.images[0]), fit: BoxFit.cover),
+                            borderRadius: Config.borderRadius,
+                          ),
                         ),
                       ),
                     ),
@@ -65,7 +68,7 @@ class MultipleItem extends StatelessWidget {
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Config.wColor,
+                                      color: Colors.transparent,
                                       image: DecorationImage(image: NetworkImage(this.product.images[1]), fit: BoxFit.cover),
                                       borderRadius: Config.borderRadius,
                                     ),
@@ -75,7 +78,7 @@ class MultipleItem extends StatelessWidget {
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Config.wColor,
+                                      color: Colors.transparent,
                                       image: DecorationImage(image: NetworkImage(this.product.images[2]), fit: BoxFit.cover),
                                       borderRadius: Config.borderRadius,
                                     ),
@@ -91,7 +94,7 @@ class MultipleItem extends StatelessWidget {
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Config.wColor,
+                                      color: Colors.transparent,
                                       image: DecorationImage(image: NetworkImage(this.product.images[3]), fit: BoxFit.cover),
                                       borderRadius: Config.borderRadius,
                                     ),
@@ -101,7 +104,7 @@ class MultipleItem extends StatelessWidget {
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: Config.wColor,
+                                      color: Colors.transparent,
                                       image: DecorationImage(image: NetworkImage(this.product.images[4]), fit: BoxFit.cover),
                                       borderRadius: Config.borderRadius,
                                     ),
@@ -124,7 +127,7 @@ class MultipleItem extends StatelessWidget {
         User user = this.product.user.documentID == cUser.userID
             ? cUser
             : await APIs().users.user(userID: this.product.user.documentID);
-        Functions.navigateTo(context: context, w: G.Product(product: this.product, user: user), fullscreenDialog: true);
+        Functions.navigateTo(context: context, w: G.Product(product: this.product, pUser: user), fullscreenDialog: true);
       },
     );
   }

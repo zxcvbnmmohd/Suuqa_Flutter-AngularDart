@@ -22,8 +22,7 @@ class SliderItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              height: 25.0,
-              margin: EdgeInsets.symmetric(horizontal: 25.0),
+              margin: EdgeInsets.only(left: 25.0, right: 25.0, bottom: 5.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -44,21 +43,24 @@ class SliderItem extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Container(
-                child: PageView.builder(
-                  controller: PageController(initialPage: 0),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Config.wColor,
-                        image: DecorationImage(image: NetworkImage(this.product.images[index]), fit: BoxFit.cover),
-                        borderRadius: Config.borderRadius,
-                      ),
+              child: Hero(
+                tag: this.product.productID,
+                child: Container(
+                  child: PageView.builder(
+                    controller: PageController(initialPage: 0, viewportFraction: 0.9),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(image: NetworkImage(this.product.images[index]), fit: BoxFit.cover),
+                          borderRadius: Config.borderRadius,
+                        ),
 //                      width: 300.0,
-                      margin: EdgeInsets.symmetric(horizontal: 25.0),
-                    );
-                  },
-                  itemCount: this.product.images.length,
+                        margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                      );
+                    },
+                    itemCount: this.product.images.length,
+                  ),
                 ),
               ),
             ),
@@ -69,7 +71,7 @@ class SliderItem extends StatelessWidget {
         User user = this.product.user.documentID == cUser.userID
             ? cUser
             : await APIs().users.user(userID: this.product.user.documentID);
-        Functions.navigateTo(context: context, w: G.Product(product: this.product, user: user), fullscreenDialog: true);
+        Functions.navigateTo(context: context, w: G.Product(product: this.product, pUser: user), fullscreenDialog: true);
       },
     );
   }

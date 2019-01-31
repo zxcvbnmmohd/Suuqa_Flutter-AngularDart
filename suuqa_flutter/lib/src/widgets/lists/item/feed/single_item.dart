@@ -22,7 +22,7 @@ class SingleItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              height: 25.0,
+              margin: EdgeInsets.only(bottom: 5.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -43,11 +43,14 @@ class SingleItem extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Config.wColor,
-                  image: DecorationImage(image: NetworkImage(this.product.images.first), fit: BoxFit.cover),
-                  borderRadius: Config.borderRadius,
+              child: Hero(
+                tag: this.product.productID,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: Config.borderRadius,
+                    image: DecorationImage(image: NetworkImage(this.product.images.first), fit: BoxFit.fitWidth)
+                  ),
                 ),
               ),
             ),
@@ -58,7 +61,7 @@ class SingleItem extends StatelessWidget {
         User user = this.product.user.documentID == cUser.userID
             ? cUser
             : await APIs().users.user(userID: this.product.user.documentID);
-        Functions.navigateTo(context: context, w: G.Product(product: this.product, user: user), fullscreenDialog: true);
+        Functions.navigateTo(context: context, w: G.Product(product: this.product, pUser: user), fullscreenDialog: true);
       },
     );
   }

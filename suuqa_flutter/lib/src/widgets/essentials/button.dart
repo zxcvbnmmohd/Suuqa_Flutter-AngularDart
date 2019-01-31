@@ -17,7 +17,7 @@ class Button extends StatelessWidget {
     return this.outline
         ? Container(
             margin: this.margin,
-            height: 65.0,
+            height: 60.0,
             child: GestureDetector(
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 25.0),

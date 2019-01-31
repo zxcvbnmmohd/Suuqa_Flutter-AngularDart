@@ -8,7 +8,6 @@ import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
 import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
 import io.flutter.plugins.firebase.storage.FirebaseStoragePlugin;
 import com.roughike.facebooklogin.facebooklogin.FacebookLoginPlugin;
-import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin;
 
 /**
  * Generated file. Do not edit.
@@ -25,7 +24,6 @@ public final class GeneratedPluginRegistrant {
     FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
     FirebaseStoragePlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebase.storage.FirebaseStoragePlugin"));
     FacebookLoginPlugin.registerWith(registry.registrarFor("com.roughike.facebooklogin.facebooklogin.FacebookLoginPlugin"));
-    FlutterLocalNotificationsPlugin.registerWith(registry.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {

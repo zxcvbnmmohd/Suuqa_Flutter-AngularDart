@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:suuqa_common/suuqa_common.dart';
-import 'package:suuqa/src/widgets/lists/item/chats_item.dart';
+import 'package:suuqa/src/widgets/lists/item/chats/chat_item.dart';
 
 class ChatsList extends StatelessWidget {
   final List<Chat> chats;
@@ -13,7 +13,7 @@ class ChatsList extends StatelessWidget {
       physics: ClampingScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return ChatsItem();
+        return ChatItem(chat: this.chats[index]);
       },
       itemCount: this.chats.length,
     );

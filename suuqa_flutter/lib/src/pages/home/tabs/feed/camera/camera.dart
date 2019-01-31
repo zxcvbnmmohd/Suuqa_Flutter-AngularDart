@@ -245,7 +245,7 @@ class _CameraState extends State<Camera> {
     }
 
     final Directory extDir = await getApplicationDocumentsDirectory();
-    final String dirPath = '${extDir.path}/Pictures/Souq';
+    final String dirPath = '${extDir.path}/Pictures/Suuqa';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${DateTime.now().millisecondsSinceEpoch.toString()}.png';
 

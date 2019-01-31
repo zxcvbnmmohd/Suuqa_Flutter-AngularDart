@@ -10,10 +10,11 @@ class Config {
   static Color tColor = Color(0xFF353b48);
   static Color bgColor = Color(0xFFf5f6fa);
 
-  static List<String> categories = ['Cars', 'Tech', 'Home', 'Media', 'Baby', 'Services', 'Freebies'];
+  static List<String> categories = ['Cars', 'Tech', 'Home', 'Media', 'Baby', 'Travel', 'Services', 'Freebies'];
   static BorderRadius borderRadius = BorderRadius.all(Radius.circular(10.0));
 
   // Paths
+  static String pathGradient = 'lib/src/assets/images/gradient.png';
   static String pathUploadPhoto = 'lib/src/assets/images/upload-photo.png';
   static String pathPlaceholderProfile = 'lib/src/assets/images/placeholder-profile.png';
 

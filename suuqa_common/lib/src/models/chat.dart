@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suuqa_common/src/apis/apis.dart';
+import 'package:suuqa_common/src/models/product.dart';
 
 class Chat {
   String chatID;
-  DocumentReference product;
+  Product product;
   List<dynamic> users = [];
   String imageURL;
   String type;
@@ -10,12 +12,13 @@ class Chat {
   bool isTyping;
   Timestamp createdAt, updatedAt;
 
-  Chat transform({String key, Map map}) {
+  Future<Chat> transform({String key, Map map}) async {
     Chat chat = new Chat();
     List<dynamic> users = map['users'];
+    DocumentReference product = map['product'];
 
     chat.chatID = key;
-    chat.product = map['product'];
+    chat.product = await APIs().products.product(isSelling: true, productID: product.documentID);
     chat.users = users;
     chat.imageURL = map['imageURL'];
     chat.type = map['type'];

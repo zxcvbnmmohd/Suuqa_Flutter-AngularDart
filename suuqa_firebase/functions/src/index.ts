@@ -7,13 +7,13 @@ admin.initializeApp();
 const config = functions.config();
 const algoliaClient = algoliaSearch(
   config.algolia.appid,
-  config.algolia.adminapikey
+  config.algolia.apikey
 );
 const productsIndex = algoliaClient.initIndex("products");
 const usersIndex = algoliaClient.initIndex("users");
 
 exports.createProduct = functions.firestore
-  .document("products/{pID}")
+  .document("products-selling/{pID}")
   .onCreate((snap, context) => {
     const objectID = snap.id;
     const data = snap.data();
@@ -31,7 +31,7 @@ exports.createProduct = functions.firestore
   });
 
 exports.deleteProduct = functions.firestore
-  .document("products/{pID}")
+  .document("products-selling/{pID}")
   .onDelete((snap, context) => {
     const objectID = snap.id;
 

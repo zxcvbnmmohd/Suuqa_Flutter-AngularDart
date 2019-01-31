@@ -1,10 +1,19 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:suuqa_common/suuqa_common.dart';
 import 'package:suuqa/src/functions.dart';
 import 'package:suuqa/src/pages/home/tabs/feed/category_feed.dart';
 
 class Categories extends StatelessWidget {
+  final List<Address> addresses;
+  final int addressIndex;
+  final double radius;
+  final int limitTo;
+  final double priceMin;
+  final double priceMax;
+  final int sortBy;
+
+  Categories({this.addresses, this.addressIndex, this.radius, this.limitTo, this.priceMin, this.priceMax, this.sortBy});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +26,7 @@ class Categories extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
-                  color: Config.wColor,
+                  color: Config.sColor,
                   borderRadius: Config.borderRadius,
                 ),
                 width: 150.0,
@@ -26,16 +35,6 @@ class Categories extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      Config.categories[index] == 'Services'
-                          ? '${Random().nextInt(1000)} Services'
-                          : '${Random().nextInt(1000)} Products',
-                      style: TextStyle(
-                        color: Config.bgColor,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
                     Text(
                       Config.categories[index],
                       style: TextStyle(
@@ -50,7 +49,15 @@ class Categories extends StatelessWidget {
               onTap: () {
                 Functions.navigateTo(
                   context: context,
-                  w: CategoryFeed(category: Config.categories[index]),
+                  w: CategoryFeed(
+                      category: Config.categories[index],
+                      addresses: this.addresses,
+                      addressIndex: this.addressIndex,
+                      radius: this.radius,
+                      limitTo: this.limitTo,
+                      priceMin: this.priceMin,
+                      priceMax: this.priceMax,
+                      sortBy: this.sortBy),
                   fullscreenDialog: false,
                 );
               },

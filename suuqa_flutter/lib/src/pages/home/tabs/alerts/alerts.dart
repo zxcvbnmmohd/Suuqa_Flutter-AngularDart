@@ -4,6 +4,10 @@ import 'package:suuqa_common/suuqa_common.dart';
 import 'package:suuqa/src/widgets/platform_aware/pa_scaffold.dart';
 
 class Alerts extends StatefulWidget {
+  final User cUser;
+
+  Alerts({this.cUser});
+
   @override
   _AlertsState createState() => _AlertsState();
 }

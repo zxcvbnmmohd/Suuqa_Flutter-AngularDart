@@ -93,7 +93,7 @@ class Products {
   }
 
   observeSearchProducts(
-      {String search,
+      {String title,
       int limitTo,
       double priceMin,
       double priceMax,
@@ -106,7 +106,7 @@ class Products {
         query: this
             .productsSellingCollection
             .limit(limitTo)
-            .where('title', isEqualTo: search)
+            .where('title', isEqualTo: title)
             .where('total', isGreaterThanOrEqualTo: priceMin)
             .where('total', isLessThanOrEqualTo: priceMax)
             .snapshots(),

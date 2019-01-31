@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:suuqa_common/suuqa_common.dart';
 
 class PAScaffold extends StatefulWidget {

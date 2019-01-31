@@ -63,9 +63,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin, RouteA
           ];
           views = [
             Feed(cUser: InheritedUser.of(context).user),
-            Chats(),
-            Alerts(),
-            Account(),
+            Chats(cUser: InheritedUser.of(context).user),
+            Alerts(cUser: InheritedUser.of(context).user),
+            Account(cUser: InheritedUser.of(context).user),
           ];
         }
         break;

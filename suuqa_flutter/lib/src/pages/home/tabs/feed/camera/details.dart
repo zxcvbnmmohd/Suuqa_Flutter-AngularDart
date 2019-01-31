@@ -180,9 +180,9 @@ class _DetailsState extends State<Details> {
               },
               keyboardAppearance: Brightness.light,
               onTap: () {
-                Platform.isIOS ? CupertinoPicker(
-
-                ) : Container();
+//                Platform.isIOS ? CupertinoPicker(
+//
+//                ) : Container();
               },
             ),
             TextView(
@@ -293,7 +293,7 @@ class _DetailsState extends State<Details> {
               'type': 'Product',
               'title': this._titleTEC.text,
               'description': this._descTEC.text,
-              'category': Config.categories[this._categoryIndex],
+              'category': this._categoryTEC.text,
               'views': 0,
               'isSelling': true,
               'createdAt': DateTime.now(),

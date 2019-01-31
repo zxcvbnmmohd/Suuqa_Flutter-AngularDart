@@ -126,7 +126,7 @@ class Auth {
 
   logout({Function onSuccess, Function onFailure(String e)}) async {
     await this.auth.signOut();
-//    await FacebookLogin().logOut();
+    await FacebookLogin().logOut();
 
     this.isLoggedIn(onSuccess: (u) {
       onFailure(u.uid);

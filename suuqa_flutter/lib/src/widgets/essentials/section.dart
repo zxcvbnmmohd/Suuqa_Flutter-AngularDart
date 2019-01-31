@@ -9,7 +9,7 @@ class Section extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
+      margin: EdgeInsets.only(top: 15.0, bottom: 10.0),
       padding: EdgeInsets.symmetric(horizontal: 25.0),
       child: Text(
         this.text.toUpperCase(),

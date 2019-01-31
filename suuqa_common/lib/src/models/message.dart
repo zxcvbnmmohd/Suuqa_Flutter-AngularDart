@@ -6,7 +6,7 @@ class Message {
   String type;
   var message;
   bool isRead;
-  Timestamp createdAt;
+  var createdAt;
 
   Message transform({String key, Map map}) {
     Message message = new Message();

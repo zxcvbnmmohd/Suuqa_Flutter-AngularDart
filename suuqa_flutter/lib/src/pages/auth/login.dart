@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:suuqa_common/suuqa_common.dart';
 import 'package:suuqa/src/functions.dart';
 import 'package:suuqa/src/pages/auth/forgot.dart';

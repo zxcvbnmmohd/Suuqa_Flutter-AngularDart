@@ -1,19 +1,22 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:suuqa_common/suuqa_common.dart';
+import 'package:suuqa/src/functions.dart';
+import 'package:suuqa/src/pages/home/tabs/feed/search/search_feed.dart';
 import 'package:suuqa/src/widgets/essentials/text_view.dart';
 
-class Search extends StatefulWidget {
-  final ValueChanged<String> onSubmitted;
+class Search extends StatelessWidget {
+  final List<Address> addresses;
+  final int addressIndex;
+  final double radius;
+  final int limitTo;
+  final double priceMin;
+  final double priceMax;
+  final int sortBy;
 
-  Search({this.onSubmitted});
+  Search({this.addresses, this.addressIndex, this.radius, this.limitTo, this.priceMin, this.priceMax, this.sortBy});
 
-  @override
-  _SearchState createState() => _SearchState();
-}
-
-class _SearchState extends State<Search> {
-  TextEditingController _searchTEC = new TextEditingController();
+  final TextEditingController _searchTEC = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,22 @@ class _SearchState extends State<Search> {
                   autoFocus: true,
                   autoCorrect: true,
                   keyboardAppearance: Brightness.light,
-                  onSubmitted: widget.onSubmitted,
+                  onSubmitted: (s) {
+                    Navigator.pop(context);
+                    if (s.isNotEmpty) {
+                      Functions.navigateTo(
+                          context: context,
+                          w: SearchFeed(
+                              search: s,
+                              addresses: this.addresses,
+                              addressIndex: this.addressIndex,
+                              radius: this.radius,
+                              priceMin: this.priceMin,
+                              priceMax: this.priceMax,
+                              sortBy: this.sortBy),
+                          fullscreenDialog: false);
+                    }
+                  },
                 ),
               ),
             ),

@@ -131,7 +131,7 @@ class _PasswordState extends State<Password> {
                               onSuccess: (url) {
                                 Services().crud.update(
                                     ref: APIs().users.usersCollection.document(u.uid),
-                                    m: <String, dynamic>{
+                                    map: <String, dynamic>{
                                       'aviURL' : url
                                     },
                                     onSuccess: () async {
