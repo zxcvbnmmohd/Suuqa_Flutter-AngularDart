@@ -23,8 +23,9 @@ class Product extends StatefulWidget {
 class _ProductState extends State<Product> {
   @override
   Widget build(BuildContext context) {
-    final S.User cUser = InheritedUser.of(context).user;
-    final nm = NumberFormat("\$#,##0.00", "en_US");
+    Size size = MediaQuery.of(context).size;
+    S.User cUser = InheritedUser.of(context).user;
+    NumberFormat nm = NumberFormat("\$#,##0.00", "en_US");
 
     Widget w = Stack(
       children: <Widget>[
@@ -51,7 +52,7 @@ class _ProductState extends State<Product> {
             Container(
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(borderRadius: S.Config.borderRadius, color: Colors.white),
-              margin: EdgeInsets.only(left: 25.0, right: 25.0, bottom: 50.0),
+              margin: EdgeInsets.only(left: 25.0, right: 25.0, bottom: 25.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,10 +77,7 @@ class _ProductState extends State<Product> {
                                 color: S.Config.pColor,
                                 outline: true,
                                 onTap: () {
-                                  Functions.navigateTo(
-                                      context: context,
-                                      w: Messages(product: widget.product, cUser: cUser),
-                                      fullscreenDialog: false);
+                                  print('tap');
                                 },
                               ),
                             ),
@@ -93,6 +91,7 @@ class _ProductState extends State<Product> {
                                 color: S.Config.pColor,
                                 outline: true,
                                 onTap: () {
+                                  print('tap');
                                   Functions.navigateTo(
                                       context: context,
                                       w: Messages(product: widget.product, cUser: cUser),

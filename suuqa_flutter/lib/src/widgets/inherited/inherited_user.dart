@@ -6,7 +6,7 @@ class InheritedUser extends StatefulWidget {
   final bool isLoggedIn;
   final User user;
 
-  InheritedUser({this.child, this.isLoggedIn, this.user});
+  InheritedUser({this.child, this.isLoggedIn = false, this.user});
 
   @override
   _InheritedUserState createState() => _InheritedUserState();

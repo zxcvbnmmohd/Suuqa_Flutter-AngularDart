@@ -21,18 +21,17 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     final cUser = InheritedUser.of(context);
-    List<Widget> w = [];
-
-    cUser.isLoggedIn
-        ? w = [
+    List<Widget> w = cUser.isLoggedIn
+        ? [
             SizedBox(height: 25.0),
+            this._tile(title: cUser.user.name, subTitle: '', icon: Icon(Icons.person)),
             this._tile(
                 title: 'Logout',
                 subTitle: '',
                 icon: Icon(Icons.navigate_next, color: Config.bgColor),
                 onTap: () {
                   Services().auth.logout(onSuccess: () {
-                    cUser.isLoggedIn = !cUser.isLoggedIn;
+                    cUser.isLoggedIn = false;
                     cUser.user = null;
                     Functions.navigateAndReplaceWith(context: context, w: Home());
                   }, onFailure: (e) {
@@ -40,7 +39,7 @@ class _AccountState extends State<Account> {
                   });
                 }),
           ]
-        : w = [
+        : [
             SizedBox(height: 25.0),
             this._tile(
                 title: 'Login',

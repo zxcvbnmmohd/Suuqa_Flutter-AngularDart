@@ -37,6 +37,7 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     Widget w = Container(
       child: Column(
         children: <Widget>[

@@ -19,34 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin, RouteAware {
-  PageController _pageController;
-  int _currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    this._pageController = new PageController(initialPage: this._currentIndex);
-
-    this._pageController.addListener(() {
-      setState(() {
-        if (this._currentIndex != this._pageController.initialPage) {
-          this._currentIndex = this._pageController.initialPage;
-        }
-      });
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    this._pageController.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     List<BottomNavigationBarItem> items = [];
@@ -85,14 +57,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin, RouteA
 
     return PATabBar(
       items: items,
-      currentIndex: this._currentIndex,
       backgroundColor: Config.bgColor,
       views: views,
-      onTap: this._onPageChanged,
     );
   }
-
-  // MARK - Functions
-
-  _onPageChanged(int i) => setState(() => this._currentIndex = i);
 }

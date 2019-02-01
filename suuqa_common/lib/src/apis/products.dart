@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_helpers/firestore_helpers.dart';
+//import 'package:firestore_helpers/firestore_helpers.dart';
 import 'package:suuqa_common/src/configs/config.dart';
 import 'package:suuqa_common/src/models/product.dart';
 import 'package:suuqa_common/src/services/services.dart';
@@ -127,72 +127,72 @@ class Products {
         });
   }
 
-  Stream<List<Product>> observeGeoProducts(
-      {GeoPoint geoPoint,
-      double radius,
-      int addressIndex,
-      double priceMin,
-      double priceMax,
-      int limitTo,
-      Function onEmpty,
-      Function onFailure(String e)}) {
-    return getDataInArea(
-        area: Area(geoPoint, radius),
-        source: this.productsSellingCollection,
-        mapper: (doc) {
-          return Product().transform(key: doc.documentID, map: doc.data);
-        },
-        locationFieldNameInDB: 'address.geoPoint',
-        locationAccessor: (product) => product.address.geoPoint,
-        distanceMapper: (product, distance) {
-          if (product != null) {
-            product.address.distance = distance;
-            return product;
-          } else {
-            onEmpty();
-          }
-        },
-        distanceAccessor: (product) => product.address.distance,
-        sortDecending: true,
-        serverSideConstraints: [
-          QueryConstraint(field: 'total', isGreaterThan: priceMin),
-          QueryConstraint(field: 'total', isLessThan: priceMax),
-        ]);
-  }
-
-  Stream<List<Product>> observeGeoCategoryProducts(
-      {GeoPoint geoPoint,
-      double radius,
-      String category,
-      double priceMin,
-      double priceMax,
-      int limitTo,
-      Function onEmpty,
-      Function onFailure(String e)}) {
-    return getDataInArea(
-        area: Area(geoPoint, radius),
-        source: this.productsSellingCollection.limit(limitTo),
-        mapper: (doc) {
-          return Product().transform(key: doc.documentID, map: doc.data);
-        },
-        locationFieldNameInDB: 'address.geopoint',
-        locationAccessor: (product) => product.address.geoPoint,
-        distanceMapper: (product, distance) {
-          if (product != null) {
-            product.address.distance = distance;
-            return product;
-          } else {
-            onEmpty();
-          }
-        },
-        distanceAccessor: (product) => product.address.distance,
-        sortDecending: true,
-        serverSideConstraints: [
-          QueryConstraint(field: 'category', isEqualTo: category),
-          QueryConstraint(field: 'total', isGreaterThan: priceMin),
-          QueryConstraint(field: 'total', isLessThan: priceMax),
-        ]);
-  }
+//  Stream<List<Product>> observeGeoProducts(
+//      {GeoPoint geoPoint,
+//      double radius,
+//      int addressIndex,
+//      double priceMin,
+//      double priceMax,
+//      int limitTo,
+//      Function onEmpty,
+//      Function onFailure(String e)}) {
+//    return getDataInArea(
+//        area: Area(geoPoint, radius),
+//        source: this.productsSellingCollection,
+//        mapper: (doc) {
+//          return Product().transform(key: doc.documentID, map: doc.data);
+//        },
+//        locationFieldNameInDB: 'address.geoPoint',
+//        locationAccessor: (product) => product.address.geoPoint,
+//        distanceMapper: (product, distance) {
+//          if (product != null) {
+//            product.address.distance = distance;
+//            return product;
+//          } else {
+//            onEmpty();
+//          }
+//        },
+//        distanceAccessor: (product) => product.address.distance,
+//        sortDecending: true,
+//        serverSideConstraints: [
+//          QueryConstraint(field: 'total', isGreaterThan: priceMin),
+//          QueryConstraint(field: 'total', isLessThan: priceMax),
+//        ]);
+//  }
+//
+//  Stream<List<Product>> observeGeoCategoryProducts(
+//      {GeoPoint geoPoint,
+//      double radius,
+//      String category,
+//      double priceMin,
+//      double priceMax,
+//      int limitTo,
+//      Function onEmpty,
+//      Function onFailure(String e)}) {
+//    return getDataInArea(
+//        area: Area(geoPoint, radius),
+//        source: this.productsSellingCollection.limit(limitTo),
+//        mapper: (doc) {
+//          return Product().transform(key: doc.documentID, map: doc.data);
+//        },
+//        locationFieldNameInDB: 'address.geopoint',
+//        locationAccessor: (product) => product.address.geoPoint,
+//        distanceMapper: (product, distance) {
+//          if (product != null) {
+//            product.address.distance = distance;
+//            return product;
+//          } else {
+//            onEmpty();
+//          }
+//        },
+//        distanceAccessor: (product) => product.address.distance,
+//        sortDecending: true,
+//        serverSideConstraints: [
+//          QueryConstraint(field: 'category', isEqualTo: category),
+//          QueryConstraint(field: 'total', isGreaterThan: priceMin),
+//          QueryConstraint(field: 'total', isLessThan: priceMax),
+//        ]);
+//  }
 
   observeUserSellingProducts(
       {DocumentReference user,
