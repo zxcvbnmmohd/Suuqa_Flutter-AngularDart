@@ -1,4 +1,3 @@
-import 'package:suuqa_common/suuqa_common.dart';
 
 void main() {
 //  test('adds one to input values', () {

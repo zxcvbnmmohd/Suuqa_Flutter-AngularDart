@@ -12,22 +12,15 @@ class Users {
     return this._usersCollection;
   }
 
-  cUserDocument() async {
-    String userID = (await Services().auth.auth.currentUser()).uid;
-    return this.usersCollection.document(userID).get();
-  }
-
   Future<User> cUser() async {
-    DocumentSnapshot ds = await this.cUserDocument();
+    String userID = (await Services().auth.auth.currentUser()).uid;
+
+    DocumentSnapshot ds = await this.usersCollection.document(userID).get();
     return User().transform(key: ds.documentID, map: ds.data);
   }
 
-  usersRef({String userID}) async {
-    return this.usersCollection.document(userID).get();
-  }
-
-  user({String userID}) async {
-    DocumentSnapshot ds = await this.usersRef(userID: userID);
+  Future<User> user({String userID}) async {
+    DocumentSnapshot ds = await this.usersCollection.document(userID).get();
     return User().transform(key: ds.documentID, map: ds.data);
   }
 

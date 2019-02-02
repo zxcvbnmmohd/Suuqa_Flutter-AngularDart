@@ -7,9 +7,10 @@ import 'package:suuqa/src/widgets/inherited/inherited_user.dart';
 import 'package:suuqa/src/widgets/platform_aware/pa_scaffold.dart';
 
 class Chat extends StatefulWidget {
-  final S.Product product;
+  final S.Chat chat;
+  final S.User pUser;
 
-  Chat({this.product});
+  Chat({this.chat, this.pUser});
 
   @override
   _ChatState createState() => _ChatState();
@@ -18,9 +19,9 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
-    final S.User cUser = InheritedUser.of(context).user;
+    S.User cUser = InheritedUser.of(context).user;
 
-    Widget w = widget.product.forDelivery
+    Widget w = widget.chat.product.forDelivery
         ? DefaultTabController(
             length: 2,
             child: Scaffold(
@@ -34,19 +35,19 @@ class _ChatState extends State<Chat> {
                 labelColor: S.Config.tColor,
               ),
               body: TabBarView(children: [
-                Messages(product: widget.product, cUser: cUser),
+                Messages(chat: widget.chat, product: widget.chat.product, cUser: cUser),
                 Buy(),
               ]),
             ),
           )
-        : Messages(product: widget.product, cUser: cUser);
+        : Messages(chat: widget.chat, product: widget.chat.product, cUser: cUser);
 
     return PAScaffold(
         iOSLargeTitle: false,
         color: S.Config.bgColor,
         title: 'Chat',
         leading: IconButton(
-            icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
+            icon: Icon(Icons.close),
             onPressed: () {
               Navigator.pop(context);
             }),

@@ -7,10 +7,12 @@ import 'package:suuqa/src/widgets/lists/list/messages_list.dart';
 import 'package:suuqa/src/widgets/platform_aware/pa_scaffold.dart';
 
 class Messages extends StatefulWidget {
+  final Chat chat;
   final Product product;
   final User cUser;
+  final bool navBar;
 
-  Messages({this.product, this.cUser});
+  Messages({this.chat, this.product, this.cUser, this.navBar = false});
 
   @override
   _MessagesState createState() => _MessagesState();
@@ -23,15 +25,28 @@ class _MessagesState extends State<Messages> {
 
   Chat _chat;
   List<Message> _messages = [];
-  bool _isLoading = true, _chatExists = false;
+  bool _isLoading = true;
   File _image;
   String _imageURL;
 
   @override
   void initState() {
     super.initState();
+    if (widget.chat == null) {
+      this._initChat(product: widget.product, user: widget.cUser, chat: this._chat, messages: this._messages);
+    } else {
+      this._chat = widget.chat;
+      this._initMessages(chatID: this._chat.chatID, messages: this._messages);
+    }
+  }
 
-    this._initChat(p: widget.product, u: widget.cUser, c: this._chat, messages: this._messages);
+  @override
+  void dispose() {
+    super.dispose();
+
+    this._messageTEC.dispose();
+    this._messageFN.dispose();
+    this._scrollController.dispose();
   }
 
   @override
@@ -56,7 +71,11 @@ class _MessagesState extends State<Messages> {
                   child: Container(
                     padding: EdgeInsets.all(5.0),
                     decoration: BoxDecoration(color: Colors.white, borderRadius: Config.borderRadius),
-                    margin: EdgeInsets.only(left: 10.0, top: 6.0, bottom: 5.0),
+                    margin: EdgeInsets.only(
+                        left: 10.0,
+                        top: 6.0,
+                        right: widget.product.user.documentID == widget.cUser.userID ? 0.0 : 10.0,
+                        bottom: 5.0),
                     child: Container(
                       child: TextView(
                         controller: this._messageTEC,
@@ -74,21 +93,39 @@ class _MessagesState extends State<Messages> {
                         fontSize: 15.0,
                         fontWeight: FontWeight.w500,
                         textAlign: TextAlign.left,
+                        autoFocus: true,
                         onSubmitted: (s) {
                           if (s.length != 0) {
-                            String messageID = APIs()
-                                .chats
-                                .chatsCollection
-                                .document(this._chat.chatID)
-                                .collection('messages')
-                                .document()
-                                .documentID;
-                            this._sendMessage(
-                                userID: widget.cUser.userID,
-                                chatID: this._chat.chatID,
-                                messageID: messageID,
-                                type: 'Text',
-                                scrollController: this._scrollController);
+                            if (this._chat != null) {
+                              this._sendMessage(
+                                  userID: widget.cUser.userID,
+                                  chatID: this._chat.chatID,
+                                  type: 'Text',
+                                  msg: s,
+                                  scrollController: this._scrollController);
+                            } else {
+                              this._createChat(
+                                  productID: widget.product.productID,
+                                  fromUserID: widget.cUser.userID,
+                                  toUserID: widget.product.user.documentID,
+                                  onSuccess: () {
+                                    String messageID = APIs()
+                                        .chats
+                                        .chatsCollection
+                                        .document(this._chat.chatID)
+                                        .collection('messages')
+                                        .document()
+                                        .documentID;
+                                    this._sendMessage(
+                                        userID: widget.cUser.userID,
+                                        chatID: this._chat.chatID,
+                                        messageID: messageID,
+                                        type: 'Text',
+                                        msg: s,
+                                        scrollController: this._scrollController);
+                                  });
+                              this._messageTEC.text = '';
+                            }
                           }
                         },
                         keyboardAppearance: Brightness.light,
@@ -96,33 +133,34 @@ class _MessagesState extends State<Messages> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.photo_library),
-                  color: Config.sColor,
-                  onPressed: () {
-                    Functions.addPhoto(
-                        context: context,
-                        onSuccess: (image) {
-                          String messageID = APIs()
-                              .chats
-                              .chatsCollection
-                              .document(this._chat.chatID)
-                              .collection('messages')
-                              .document()
-                              .documentID;
-                          Services().storage.upload(
-                              path: 'users/${widget.cUser.userID}/chats/${this._chat.chatID}/messages/$messageID/image.png',
-                              file: image,
-                              onSuccess: (url) {
-                                this._sendMessage(
-                                    type: 'Image', message: url, userID: widget.cUser.userID, messageID: messageID);
-                              },
-                              onFailure: (e) {
-                                print(e);
+                widget.product.user.documentID == widget.cUser.userID
+                    ? IconButton(
+                        icon: Icon(Icons.photo_library),
+                        color: Config.sColor,
+                        onPressed: () {
+                          Functions.addPhoto(
+                              context: context,
+                              onSuccess: (image) {
+                                String messageID = APIs()
+                                    .chats
+                                    .chatsCollection
+                                    .document(this._chat.chatID)
+                                    .collection('messages')
+                                    .document()
+                                    .documentID;
+                                Services().storage.upload(
+                                    path: '/chats/${this._chat.chatID}/messages/$messageID/image.png',
+                                    file: image,
+                                    onSuccess: (url) {
+                                      this._sendMessage(type: 'Image', msg: url, userID: widget.cUser.userID);
+                                    },
+                                    onFailure: (e) {
+                                      print(e);
+                                    });
                               });
-                        });
-                  },
-                ),
+                        },
+                      )
+                    : Container(),
               ],
             ),
           )
@@ -130,31 +168,30 @@ class _MessagesState extends State<Messages> {
       ),
     );
 
-    return PAScaffold(
-        iOSLargeTitle: false,
-        color: Config.bgColor,
-        title: 'Messages',
-        leading: IconButton(
-            icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
-            color: Config.tColor,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        actions: Platform.isIOS ? <Widget>[Container()] : null,
-        heroTag: 'Messages',
-        androidView: w,
-        iOSView: w);
+    return widget.navBar
+        ? PAScaffold(
+            iOSLargeTitle: false,
+            color: Config.bgColor,
+            title: 'Messages',
+            leading: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            actions: Platform.isIOS ? <Widget>[Container()] : null,
+            heroTag: 'Messages',
+            androidView: w,
+            iOSView: w)
+        : w;
   }
 
   // MARK - Functions
 
-  _createChat({String productID, String fromUserID, String toUserID}) {
+  _createChat({String productID, String fromUserID, String toUserID, Function onSuccess}) {
     Map<String, dynamic> m = {
       'product': APIs().products.productsSellingCollection.document(productID),
       'users': [APIs().users.usersCollection.document(fromUserID), APIs().users.usersCollection.document(toUserID)],
       'imageURL': widget.product.images.first,
-      'type': '',
-      'message': '',
       'isTyping': false,
       'createdAt': DateTime.now(),
       'updatedAt': DateTime.now()
@@ -163,41 +200,38 @@ class _MessagesState extends State<Messages> {
         ref: APIs().chats.chatsCollection.document(),
         map: m,
         onSuccess: () {
-          setState(() {
-            this._chatExists = !this._chatExists;
-          });
+          onSuccess();
         },
         onFailure: (e) {
           print(e);
         });
   }
 
-  _initChat({Product p, User u, Chat c, List<Message> messages}) {
+  _initChat({Product product, User user, Chat chat, List<Message> messages}) {
     APIs().chats.observeChat(
-          productID: p.productID,
-          userID: u.userID,
+          productID: product.productID,
+          userID: user.userID,
           onAdded: (c) {
             print('CHAT ADDED');
             setState(() {
-              c = c;
-              this._initMessages(chatID: c.chatID, messages: messages);
+              this._chat = c;
             });
+            this._initMessages(chatID: c.chatID, messages: messages);
           },
           onModified: (c) {
             print('CHAT MODIFEID');
             setState(() {
-              c = c;
+              chat = c;
             });
           },
           onRemoved: (c) {
             print('CHAT REMOVED');
             setState(() {
-              c = null;
+              chat = null;
             });
           },
           onEmpty: () {
-            print('CHAT CREATED');
-            this._createChat(productID: p.productID, fromUserID: u.userID, toUserID: p.user.documentID);
+            print('CHAT EMPTY');
           },
           onFailure: (e) {
             print(e);
@@ -234,13 +268,13 @@ class _MessagesState extends State<Messages> {
   }
 
   _sendMessage(
-      {String userID, String chatID, String messageID, String message, String type, ScrollController scrollController}) {
-    Map<String, dynamic> c = {'type': type, 'message': message, 'createdAt': DateTime.now(), 'updatedAt': DateTime.now()};
+      {String chatID, String messageID, String userID, String type, String msg, ScrollController scrollController}) {
+    Map<String, dynamic> c = {'type': type, 'message': msg, 'createdAt': DateTime.now(), 'updatedAt': DateTime.now()};
     Map<String, dynamic> m = {
       'user': APIs().users.usersCollection.document(userID),
       'isRead': false,
       'type': type,
-      'message': message,
+      'message': msg,
       'createdAt': DateTime.now()
     };
 

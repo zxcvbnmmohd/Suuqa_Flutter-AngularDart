@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:suuqa_common/suuqa_common.dart' as S;
 import 'package:suuqa/src/functions.dart';
-import 'package:suuqa/src/pages/home/tabs/chats/chat.dart';
 import 'package:suuqa/src/pages/home/tabs/chats/inner_chat/buy.dart';
 import 'package:suuqa/src/pages/home/tabs/chats/inner_chat/messages.dart';
 import 'package:suuqa/src/widgets/essentials/button.dart';
@@ -23,7 +22,6 @@ class Product extends StatefulWidget {
 class _ProductState extends State<Product> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     S.User cUser = InheritedUser.of(context).user;
     NumberFormat nm = NumberFormat("\$#,##0.00", "en_US");
 
@@ -89,12 +87,12 @@ class _ProductState extends State<Product> {
                               child: Button(
                                 text: 'Chat',
                                 color: S.Config.pColor,
-                                outline: true,
+                                outline: false,
                                 onTap: () {
                                   print('tap');
                                   Functions.navigateTo(
                                       context: context,
-                                      w: Messages(product: widget.product, cUser: cUser),
+                                      w: Messages(product: widget.product, cUser: cUser, navBar: true),
                                       fullscreenDialog: false);
                                 },
                               ),

@@ -24,11 +24,7 @@ class _ChatsState extends State<Chats> {
   @override
   void initState() {
     super.initState();
-    this._initChats(
-        userID: widget.cUser.userID,
-        allChats: this._allChats,
-        buyingChats: this._buyingChats,
-        sellingChats: this._sellingChats);
+    this._initChats(userID: widget.cUser.userID);
   }
 
   @override
@@ -69,56 +65,56 @@ class _ChatsState extends State<Chats> {
 
   // MARK - Functions
 
-  _initChats({String userID, List<Chat> allChats, List<Chat> buyingChats, List<Chat> sellingChats}) {
+  _initChats({String userID}) {
     APIs().chats.observeChats(
         userID: userID,
         onAdded: (c) {
           setState(() {
-            allChats.add(c);
-            allChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+            this._allChats.add(c);
+            this._allChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
 
-            if (userID == c.users.first.documentID) {
-              sellingChats.add(c);
-              sellingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+            if (userID == c.product.user.documentID) {
+              this._sellingChats.add(c);
+              this._sellingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
             } else {
-              buyingChats.add(c);
-              buyingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+              this._buyingChats.add(c);
+              this._buyingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
             }
           });
         },
         onModified: (c) {
-          int ai = allChats.indexWhere((chat) => c.chatID == chat.chatID);
-          int bi = buyingChats.indexWhere((chat) => c.chatID == chat.chatID);
-          int si = sellingChats.indexWhere((chat) => c.chatID == chat.chatID);
+          int ai = this._allChats.indexWhere((chat) => c.chatID == chat.chatID);
+          int bi = this._buyingChats.indexWhere((chat) => c.chatID == chat.chatID);
+          int si = this._sellingChats.indexWhere((chat) => c.chatID == chat.chatID);
 
           setState(() {
-            allChats[ai] = c;
-            allChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+            this._allChats[ai] = c;
+            this._allChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
 
-            if (userID == c.users.first.documentID) {
-              sellingChats[si] = c;
-              sellingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+            if (userID == c.product.user.documentID) {
+              this._sellingChats[si] = c;
+              this._sellingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
             } else {
-              buyingChats[bi] = c;
-              buyingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+              this._buyingChats[bi] = c;
+              this._buyingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
             }
           });
         },
         onRemoved: (c) {
-          int ai = allChats.indexWhere((chat) => c.chatID == chat.chatID);
-          int bi = buyingChats.indexWhere((chat) => c.chatID == chat.chatID);
-          int si = sellingChats.indexWhere((chat) => c.chatID == chat.chatID);
+          int ai = this._allChats.indexWhere((chat) => c.chatID == chat.chatID);
+          int bi = this._buyingChats.indexWhere((chat) => c.chatID == chat.chatID);
+          int si = this._sellingChats.indexWhere((chat) => c.chatID == chat.chatID);
 
           setState(() {
-            allChats.removeAt(ai);
-            allChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+            this._allChats.removeAt(ai);
+            this._allChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
 
-            if (userID == c.users.first.documentID) {
-              sellingChats.removeAt(si);
-              sellingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+            if (userID == c.product.user.documentID) {
+              this._sellingChats.removeAt(si);
+              this._sellingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
             } else {
-              buyingChats.removeAt(bi);
-              buyingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+              this._buyingChats.removeAt(bi);
+              this._buyingChats.sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
             }
           });
         },

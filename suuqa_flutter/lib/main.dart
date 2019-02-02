@@ -49,25 +49,25 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     Platform.isIOS
         ? this._view = CupertinoApp(
-      home: Home(),
-      navigatorObservers: [
-        Services().analytics.firebaseAnalyticsObserver,
-      ],
-      title: this._title,
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-      ],
-      debugShowCheckedModeBanner: false,
-    )
+            home: Home(),
+            navigatorObservers: [
+              Services().analytics.firebaseAnalyticsObserver,
+            ],
+            title: this._title,
+            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              DefaultMaterialLocalizations.delegate,
+              DefaultWidgetsLocalizations.delegate,
+            ],
+            debugShowCheckedModeBanner: false,
+          )
         : this._view = MaterialApp(
-      home: Home(),
-      navigatorObservers: [
-        Services().analytics.firebaseAnalyticsObserver,
-      ],
-      title: this._title,
-      debugShowCheckedModeBanner: false,
-    );
+            home: Home(),
+            navigatorObservers: [
+              Services().analytics.firebaseAnalyticsObserver,
+            ],
+            title: this._title,
+            debugShowCheckedModeBanner: false,
+          );
 
     return this._view;
   }

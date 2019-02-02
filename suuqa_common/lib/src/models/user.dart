@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuqa_common/src/models/address.dart';
 
 class User {
-  String userID, imageURL, name, email, phone, role;
+  String userID, aviURL, name, email, phone, role;
   List<Address> addresses = [];
   Timestamp createdAt, updatedAt;
 
@@ -11,7 +11,7 @@ class User {
     List<dynamic> addresses = map['addresses'];
 
     user.userID = key;
-    user.imageURL = map['imageURL'];
+    user.aviURL = map['aviURL'];
     user.name = map['name'];
     user.email = map['email'];
     user.phone = map['phone'];

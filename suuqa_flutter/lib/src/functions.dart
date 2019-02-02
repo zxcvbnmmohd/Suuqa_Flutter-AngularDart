@@ -74,17 +74,17 @@ class Functions {
             });
   }
 
-  static String readDateTime({DateTime date}) {
+  static String readDateTime({var date}) {
     var now = new DateTime.now();
     var format = new DateFormat('HH:mm a');
-    var diff = now.difference(date);
+    var diff = now.difference(date.toDate());
     var time = '';
 
     if (diff.inSeconds <= 0 ||
         diff.inSeconds > 0 && diff.inMinutes == 0 ||
         diff.inMinutes > 0 && diff.inHours == 0 ||
         diff.inHours > 0 && diff.inDays == 0) {
-      time = format.format(date);
+      time = format.format(date.toDate());
     } else if (diff.inDays > 0 && diff.inDays < 7) {
       if (diff.inDays == 1) {
         time = diff.inDays.toString() + ' DAY AGO';

@@ -11,21 +11,12 @@ class Buy extends StatefulWidget {
 class _BuyState extends State<Buy> {
   @override
   Widget build(BuildContext context) {
-    List<Widget> w = [];
+    Widget w = Container(
+      child: Column(
+        children: <Widget>[],
+      ),
+    );
 
-    return PAScaffold(
-        iOSLargeTitle: true,
-        color: Config.bgColor,
-        title: 'Buy',
-        leading: IconButton(
-            icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
-            color: Config.tColor,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        actions: Platform.isIOS ? <Widget>[Container()] : null,
-        heroTag: 'Buy',
-        androidView: ListView(children: w),
-        iOSView: SliverList(delegate: SliverChildListDelegate(w)));
+    return w;
   }
 }
