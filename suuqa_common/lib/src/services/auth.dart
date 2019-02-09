@@ -48,7 +48,7 @@ class Auth {
     });
   }
 
-  loginWithFacebook({Function onLogin, Function onRegister(FirebaseUser u), Function onFailure(String e)}) async {
+  loginWithFacebook({Function onLogin, Future<Function> onRegister(FirebaseUser u), Function onFailure(String e)}) async {
     FacebookLogin facebookLogin = FacebookLogin();
     FacebookLoginResult result = await facebookLogin.logInWithReadPermissions(['email', 'public_profile']);
     switch (result.status) {

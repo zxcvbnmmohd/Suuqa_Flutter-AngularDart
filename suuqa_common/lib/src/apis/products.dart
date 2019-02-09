@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firestore_helpers/firestore_helpers.dart';
+import 'package:firestore_helpers/firestore_helpers.dart';
+import 'package:suuqa_common/src/apis/apis.dart';
 import 'package:suuqa_common/src/configs/config.dart';
 import 'package:suuqa_common/src/models/product.dart';
 import 'package:suuqa_common/src/services/services.dart';
@@ -195,7 +196,7 @@ class Products {
 //  }
 
   observeUserSellingProducts(
-      {DocumentReference user,
+      {String userID,
       int limitTo,
       Function onAdded(Product p),
       Function onModified(Product p),
@@ -204,7 +205,7 @@ class Products {
     Services().crud.readRT(
         query: this
             .productsSellingCollection
-            .where('user', isEqualTo: user)
+            .where('user', isEqualTo: APIs().users.usersCollection.document(userID))
             .limit(limitTo)
             .snapshots(),
         onAdded: (ds) {
@@ -222,7 +223,7 @@ class Products {
   }
 
   observeUserSoldProducts(
-      {DocumentReference user,
+      {String userID,
       int limitTo,
       Function onAdded(Product p),
       Function onModified(Product p),
@@ -231,7 +232,7 @@ class Products {
     Services().crud.readRT(
         query: this
             .productsSoldCollection
-            .where('user', isEqualTo: user)
+            .where('user', isEqualTo: APIs().users.usersCollection.document(userID))
             .limit(limitTo)
             .snapshots(),
         onAdded: (ds) {

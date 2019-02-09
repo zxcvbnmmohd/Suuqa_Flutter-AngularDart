@@ -4,10 +4,11 @@ import 'package:suuqa_common/src/models/address.dart';
 class User {
   String userID, aviURL, name, email, phone, role;
   List<Address> addresses = [];
+  Count count;
   Timestamp createdAt, updatedAt;
 
   User transform({String key, Map map}) {
-    User user = new User();
+    User user = User();
     List<dynamic> addresses = map['addresses'];
 
     user.userID = key;
@@ -21,9 +22,27 @@ class User {
       user.addresses.add(Address().transform(map: address));
     });
 
+    user.count = Count().transform(map: map['count']);
+
     user.createdAt = map['createdAt'];
     user.updatedAt = map['updatedAt'];
 
     return user;
+  }
+}
+
+class Count {
+  int products, services, sold;
+  double rating;
+
+  Count transform({Map map}) {
+    Count count = Count();
+
+    count.products = map['products'];
+    count.services = map['services'];
+    count.sold = map['sold'];
+    count.rating = map['rating'].toDouble();
+
+    return count;
   }
 }
