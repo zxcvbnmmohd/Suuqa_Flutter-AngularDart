@@ -136,20 +136,20 @@ class _LoginState extends State<Login> {
                 ),
                 FacebookSignInButton(
                     onPressed: () {
-//                  Services().auth.loginWithFacebook(
-//                        onLogin: () async {
-//                          InheritedUser.of(context).user = await APIs().users.cUser();
-//                          InheritedUser.of(context).isLoggedIn = true;
-//                          Functions.navigateAndReplaceWith(context: context, w: Home());
-//                        },
-//                        onRegister: (user) {
-////                          InheritedUser.of(context).user = await APIs().users.cUser();
-////                          InheritedUser.of(context).isLoggedIn = true;
-////                          Functions.navigateAndReplaceWith(context: context, w: Home());
-//                        },
-//                        onFailure: (e) {
-//                          print(e);
-//                        });
+                  Services().auth.loginWithFacebook(
+                        onLogin: () async {
+                          InheritedUser.of(context).user = await APIs().users.cUser();
+                          InheritedUser.of(context).isLoggedIn = true;
+                          Functions.navigateAndReplaceWith(context: context, w: Home());
+                        },
+                        onRegister: (user) async {
+                          InheritedUser.of(context).user = await APIs().users.cUser();
+                          InheritedUser.of(context).isLoggedIn = true;
+                          Functions.navigateAndReplaceWith(context: context, w: Home());
+                        },
+                        onFailure: (e) {
+                          print(e);
+                        });
                 }),
               ],
             ),

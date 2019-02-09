@@ -27,20 +27,17 @@ class _ProductState extends State<Product> {
 
     Widget w = Stack(
       children: <Widget>[
-        Hero(
-          tag: widget.product.productID,
-          child: Container(
-            height: double.infinity,
-            child: PageView.builder(
-              controller: PageController(initialPage: 0),
-              itemBuilder: (context, index) {
-                return Image.network(
-                  widget.product.images[index],
-                  fit: BoxFit.fitHeight,
-                );
-              },
-              itemCount: widget.product.images.length,
-            ),
+        Container(
+          height: double.infinity,
+          child: PageView.builder(
+            controller: PageController(initialPage: 0),
+            itemBuilder: (context, index) {
+              return Image.network(
+                widget.product.images[index],
+                fit: BoxFit.fitHeight,
+              );
+            },
+            itemCount: widget.product.images.length,
           ),
         ),
         Column(
@@ -89,11 +86,10 @@ class _ProductState extends State<Product> {
                                 color: S.Config.pColor,
                                 outline: false,
                                 onTap: () {
-                                  print('tap');
                                   Functions.navigateTo(
                                       context: context,
                                       w: Messages(product: widget.product, cUser: cUser, navBar: true),
-                                      fullscreenDialog: false);
+                                      fullscreenDialog: true);
                                 },
                               ),
                             ),

@@ -9,10 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Functions {
-  static navigateTo({BuildContext context, Widget w, bool fullscreenDialog}) {
+  static navigateTo({BuildContext context, Widget w, bool fullscreenDialog = false}) {
     Platform.isIOS
-        ? Navigator.push(context, CupertinoPageRoute(builder: (context) => w, fullscreenDialog: fullscreenDialog))
-        : Navigator.push(context, MaterialPageRoute(builder: (context) => w, fullscreenDialog: fullscreenDialog));
+        ? Navigator.push(context, CupertinoPageRoute(builder: (context) => w, fullscreenDialog: fullscreenDialog, maintainState: true))
+        : Navigator.push(context, MaterialPageRoute(builder: (context) => w, fullscreenDialog: fullscreenDialog, maintainState: true));
   }
 
   static navigateAndReplaceWith({BuildContext context, Widget w}) {
@@ -38,7 +38,7 @@ class Functions {
             });
   }
 
-  static dialog({BuildContext context, String title, List<Widget> actions, List<Widget> options}) {
+  static dialog({BuildContext context, String title, List<CupertinoActionSheetAction> actions, List<SimpleDialogOption> options}) {
     Platform.isIOS
         ? showCupertinoModalPopup(
             context: context,

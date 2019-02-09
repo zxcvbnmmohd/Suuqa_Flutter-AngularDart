@@ -35,19 +35,22 @@ class _ChatState extends State<Chat> {
                 labelColor: S.Config.tColor,
               ),
               body: TabBarView(children: [
-                Messages(chat: widget.chat, product: widget.chat.product, cUser: cUser),
+                Messages(chat: widget.chat, cUser: cUser),
                 Buy(),
               ]),
             ),
           )
-        : Messages(chat: widget.chat, product: widget.chat.product, cUser: cUser);
+        : Messages(chat: widget.chat, cUser: cUser);
 
     return PAScaffold(
         iOSLargeTitle: false,
         color: S.Config.bgColor,
         title: 'Chat',
         leading: IconButton(
-            icon: Icon(Icons.close),
+            icon: Icon(
+              Icons.close,
+              color: S.Config.tColor,
+            ),
             onPressed: () {
               Navigator.pop(context);
             }),
@@ -56,4 +59,6 @@ class _ChatState extends State<Chat> {
         androidView: w,
         iOSView: w);
   }
+
+  //
 }

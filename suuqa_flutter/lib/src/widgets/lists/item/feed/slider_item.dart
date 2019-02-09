@@ -43,24 +43,21 @@ class SliderItem extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Hero(
-                tag: this.product.productID,
-                child: Container(
-                  child: PageView.builder(
-                    controller: PageController(initialPage: 0, viewportFraction: 0.9),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          image: DecorationImage(image: NetworkImage(this.product.images[index]), fit: BoxFit.cover),
-                          borderRadius: Config.borderRadius,
-                        ),
+              child: Container(
+                child: PageView.builder(
+                  controller: PageController(initialPage: 0, viewportFraction: 0.9),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        image: DecorationImage(image: NetworkImage(this.product.images[index]), fit: BoxFit.cover),
+                        borderRadius: Config.borderRadius,
+                      ),
 //                      width: 300.0,
-                        margin: EdgeInsets.only(left: 5.0, right: 5.0),
-                      );
-                    },
-                    itemCount: this.product.images.length,
-                  ),
+                      margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                    );
+                  },
+                  itemCount: this.product.images.length,
                 ),
               ),
             ),

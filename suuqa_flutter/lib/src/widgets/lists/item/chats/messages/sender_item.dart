@@ -10,17 +10,13 @@ class SenderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 50.0, bottom: 5.0, right: 5.0),
+      margin: EdgeInsets.only(left: 5.0, bottom: 5.0, right: 50.0),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: 50.0),
         child: Container(
           padding: EdgeInsets.all(5.0),
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(Config.pathGradient),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
+            color: Config.wColor,
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
           child: Row(

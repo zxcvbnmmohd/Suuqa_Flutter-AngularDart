@@ -79,7 +79,7 @@ class _PAScaffoldState extends State<PAScaffold> {
                 ),
               )
         : Scaffold(
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomPadding: true,
             backgroundColor: widget.color,
             appBar: AppBar(
               backgroundColor: widget.color,

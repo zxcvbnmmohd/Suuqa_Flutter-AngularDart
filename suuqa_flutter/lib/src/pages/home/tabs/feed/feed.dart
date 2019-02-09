@@ -65,21 +65,21 @@ class _FeedState extends State<Feed> {
 //            ),
 //          ]
 //        :
-    [
-            Section(text: 'Categories'),
-            Categories(
-                addresses: this._addresses,
-                addressIndex: this._addressIndex,
-                radius: this._radius,
-                limitTo: this._limitTo,
-                priceMin: this._priceMin,
-                priceMax: this._priceMax,
-                sortBy: this._sortBy),
-            Section(text: 'Feed'),
-            this._products.length == 0
-                ? EmptyList(title: 'No Products', subtitle: 'Try Again...')
-                : FeedList(products: this._products),
-          ];
+        [
+      Section(text: 'Categories'),
+      Categories(
+          addresses: this._addresses,
+          addressIndex: this._addressIndex,
+          radius: this._radius,
+          limitTo: this._limitTo,
+          priceMin: this._priceMin,
+          priceMax: this._priceMax,
+          sortBy: this._sortBy),
+      Section(text: 'Feed'),
+      this._products.length == 0
+          ? EmptyList(title: 'No Products', subtitle: 'Try Again...')
+          : FeedList(products: this._products),
+    ];
 
     return PAScaffold(
         iOSLargeTitle: true,
@@ -125,6 +125,7 @@ class _FeedState extends State<Feed> {
             icon: Icon(Icons.search),
             color: Config.tColor,
             onPressed: () {
+              Scaffold.of(context).showSnackBar(SnackBar(content: Text('Search')));
               Functions.popup(
                   context: context,
                   w: Search(

@@ -3,15 +3,31 @@ import 'package:suuqa_common/suuqa_common.dart' as S;
 import 'package:suuqa/src/functions.dart';
 import 'package:suuqa/src/pages/home/tabs/chats/chat.dart';
 
-class ChatItem extends StatelessWidget {
+class ChatItem extends StatefulWidget {
   final S.Chat chat;
-  final S.User pUser;
 
-  ChatItem({this.chat, this.pUser});
+  ChatItem({this.chat});
+
+  @override
+  _ChatItemState createState() => _ChatItemState();
+}
+
+class _ChatItemState extends State<ChatItem> {
+  S.User pUser;
+
+  @override
+  void initState() {
+    super.initState();
+    S.APIs().users.user(userID: widget.chat.product.user.documentID).then((pUser) {
+       setState(() {
+         this.pUser = pUser;
+       });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return this.pUser == null ? Container() : GestureDetector(
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
         color: S.Config.bgColor,
@@ -65,16 +81,16 @@ class ChatItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    this.chat.isTyping ? 'Typing...' : this.chat.type == 'Text' ? this.chat.message : this.chat.type,
+                    widget.chat.isTyping ? 'Typing...' : widget.chat.type == 'Text' ? widget.chat.message : widget.chat.type,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500
                     ),
                   ),
                   Text(
-                    Functions.readDateTime(date: this.chat.updatedAt),
+                    Functions.readDateTime(date: widget.chat.updatedAt),
                     style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -89,7 +105,7 @@ class ChatItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.green,
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                image: DecorationImage(image: NetworkImage(this.chat.imageURL), fit: BoxFit.cover),
+                image: DecorationImage(image: NetworkImage(widget.chat.imageURL), fit: BoxFit.cover),
               ),
             )
           ],
@@ -99,7 +115,7 @@ class ChatItem extends StatelessWidget {
         Functions.navigateTo(
             context: context,
             w: Chat(
-              chat: this.chat,
+              chat: widget.chat,
             ),
             fullscreenDialog: true);
       },

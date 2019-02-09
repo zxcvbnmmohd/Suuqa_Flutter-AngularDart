@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:suuqa_common/suuqa_common.dart';
 import 'package:suuqa/src/widgets/inherited/inherited_user.dart';
@@ -14,17 +16,19 @@ class MessagesList extends StatelessWidget {
   Widget build(BuildContext context) {
     final cUser = InheritedUser.of(context).user;
 
-    return ListView.builder(
-      reverse: true,
-      controller: this.scrollController,
-      physics: ClampingScrollPhysics(),
-      shrinkWrap: true,
-      padding: EdgeInsets.only(top: 0.0),
-      itemBuilder: (context, index) {
-        Message message = this.messages[index];
-        return message.user.documentID == cUser.userID ? ReceiverItem(message: message) : SenderItem(message: message);
-      },
-      itemCount: this.messages.length,
-    );
+    return this.messages == null
+        ? Center(child: Platform.isIOS ? CupertinoActivityIndicator() : CircularProgressIndicator())
+        : ListView.builder(
+            reverse: true,
+            controller: this.scrollController,
+            physics: ClampingScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.only(top: 0.0),
+            itemBuilder: (context, index) {
+              Message message = this.messages[index];
+              return message.user.documentID == cUser.userID ? ReceiverItem(message: message) : SenderItem(message: message);
+            },
+            itemCount: this.messages.length,
+          );
   }
 }

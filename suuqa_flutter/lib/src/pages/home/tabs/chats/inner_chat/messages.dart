@@ -33,7 +33,7 @@ class _MessagesState extends State<Messages> {
   void initState() {
     super.initState();
     if (widget.chat == null) {
-      this._initChat(product: widget.product, user: widget.cUser, chat: this._chat, messages: this._messages);
+      this._initChat(product: widget.product, user: widget.cUser, chat: this._chat);
     } else {
       this._chat = widget.chat;
       this._initMessages(chatID: this._chat.chatID, messages: this._messages);
@@ -52,121 +52,141 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    Widget w = Container(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: MessagesList(
-              messages: this._messages,
-              scrollController: this._scrollController,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(bottom: Platform.isIOS ? size.height >= 812.0 ? 15.0 : 0.0 : 0.0),
-            color: Colors.black12,
-            child: Row(
+    Widget w = this._chat == null
+        ? Container()
+        : Container(
+            child: Column(
               children: <Widget>[
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: Config.borderRadius),
-                    margin: EdgeInsets.only(
-                        left: 10.0,
-                        top: 6.0,
-                        right: widget.product.user.documentID == widget.cUser.userID ? 0.0 : 10.0,
-                        bottom: 5.0),
-                    child: Container(
-                      child: TextView(
-                        controller: this._messageTEC,
-                        focusNode: this._messageFN,
-                        hintText: 'Is it still available?',
-                        hintStyle: TextStyle(
-                          color: Config.tColor.withOpacity(0.5),
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.send,
-                        textCapitalization: TextCapitalization.sentences,
-                        color: Config.tColor,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                        textAlign: TextAlign.left,
-                        autoFocus: true,
-                        onSubmitted: (s) {
-                          if (s.length != 0) {
-                            if (this._chat != null) {
-                              this._sendMessage(
-                                  userID: widget.cUser.userID,
-                                  chatID: this._chat.chatID,
-                                  type: 'Text',
-                                  msg: s,
-                                  scrollController: this._scrollController);
-                            } else {
-                              this._createChat(
-                                  productID: widget.product.productID,
-                                  fromUserID: widget.cUser.userID,
-                                  toUserID: widget.product.user.documentID,
-                                  onSuccess: () {
-                                    String messageID = APIs()
-                                        .chats
-                                        .chatsCollection
-                                        .document(this._chat.chatID)
-                                        .collection('messages')
-                                        .document()
-                                        .documentID;
+                Expanded(
+                  child: MessagesList(
+                    messages: this._messages,
+                    scrollController: this._scrollController,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: Platform.isIOS ? size.height >= 812.0 ? 15.0 : 0.0 : 0.0),
+                  color: Colors.black12,
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: Container(
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: Config.borderRadius),
+                          margin: EdgeInsets.only(
+                              left: 10.0,
+                              top: 6.0,
+                              right: this._chat.product.user.documentID == widget.cUser.userID ? 0.0 : 10.0,
+                              bottom: 5.0),
+                          child: Container(
+                            child: TextView(
+                              controller: this._messageTEC,
+                              focusNode: this._messageFN,
+                              hintText: 'Is it still available?',
+                              hintStyle: TextStyle(
+                                color: Config.tColor.withOpacity(0.5),
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              textCapitalization: TextCapitalization.sentences,
+                              color: Config.tColor,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w500,
+                              textAlign: TextAlign.left,
+                              autoFocus: false,
+                              onSubmitted: (s) {
+                                if (s.length != 0) {
+                                  String messageID = APIs()
+                                      .chats
+                                      .chatsCollection
+                                      .document(this._chat.chatID)
+                                      .collection('messages')
+                                      .document()
+                                      .documentID;
+                                  if (this._chat != null) {
                                     this._sendMessage(
                                         userID: widget.cUser.userID,
                                         chatID: this._chat.chatID,
                                         messageID: messageID,
                                         type: 'Text',
                                         msg: s,
-                                        scrollController: this._scrollController);
-                                  });
-                              this._messageTEC.text = '';
-                            }
-                          }
-                        },
-                        keyboardAppearance: Brightness.light,
+                                        onSuccess: () {
+                                          print('CHAT UPDATED');
+                                          this._scrollController
+                                              .animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+                                        });
+                                  } else {
+                                    this._createChat(
+                                        productID: widget.product.productID,
+                                        fromUserID: widget.cUser.userID,
+                                        toUserID: widget.product.user.documentID,
+                                        onSuccess: () {
+                                          this._sendMessage(
+                                              userID: widget.cUser.userID,
+                                              chatID: this._chat.chatID,
+                                              messageID: messageID,
+                                              type: 'Text',
+                                              msg: s,
+                                              onSuccess: () {
+                                                print('CHAT UPDATED');
+                                                this._scrollController.animateTo(0.0,
+                                                    duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+                                              });
+                                        });
+                                    this._messageTEC.text = '';
+                                  }
+                                }
+                              },
+                              keyboardAppearance: Brightness.light,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                widget.product.user.documentID == widget.cUser.userID
-                    ? IconButton(
-                        icon: Icon(Icons.photo_library),
-                        color: Config.sColor,
-                        onPressed: () {
-                          Functions.addPhoto(
-                              context: context,
-                              onSuccess: (image) {
-                                String messageID = APIs()
-                                    .chats
-                                    .chatsCollection
-                                    .document(this._chat.chatID)
-                                    .collection('messages')
-                                    .document()
-                                    .documentID;
-                                Services().storage.upload(
-                                    path: '/chats/${this._chat.chatID}/messages/$messageID/image.png',
-                                    file: image,
-                                    onSuccess: (url) {
-                                      this._sendMessage(type: 'Image', msg: url, userID: widget.cUser.userID);
-                                    },
-                                    onFailure: (e) {
-                                      print(e);
+                      this._chat.product.user.documentID == widget.cUser.userID
+                          ? IconButton(
+                              icon: Icon(Icons.photo_library),
+                              color: Config.sColor,
+                              onPressed: () {
+                                Functions.addPhoto(
+                                    context: context,
+                                    onSuccess: (image) {
+                                      String messageID = APIs()
+                                          .chats
+                                          .chatsCollection
+                                          .document(this._chat.chatID)
+                                          .collection('messages')
+                                          .document()
+                                          .documentID;
+                                      Services().storage.upload(
+                                          path: '/chats/${this._chat.chatID}/messages/$messageID/image.png',
+                                          file: image,
+                                          onSuccess: (url) {
+                                            this._sendMessage(
+                                                userID: widget.cUser.userID,
+                                                chatID: this._chat.chatID,
+                                                messageID: messageID,
+                                                type: 'Image',
+                                                msg: url,
+                                                onSuccess: () {
+                                                  print('CHAT UPDATED');
+                                                  this._scrollController.animateTo(0.0,
+                                                      duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+                                                });
+                                          },
+                                          onFailure: (e) {
+                                            print(e);
+                                          });
                                     });
-                              });
-                        },
-                      )
-                    : Container(),
+                              },
+                            )
+                          : Container(),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
-    );
+          );
 
     return widget.navBar
         ? PAScaffold(
@@ -174,7 +194,10 @@ class _MessagesState extends State<Messages> {
             color: Config.bgColor,
             title: 'Messages',
             leading: IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(
+                  Icons.close,
+                  color: Config.tColor,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 }),
@@ -207,7 +230,7 @@ class _MessagesState extends State<Messages> {
         });
   }
 
-  _initChat({Product product, User user, Chat chat, List<Message> messages}) {
+  _initChat({Product product, User user, Chat chat}) {
     APIs().chats.observeChat(
           productID: product.productID,
           userID: user.userID,
@@ -216,7 +239,7 @@ class _MessagesState extends State<Messages> {
             setState(() {
               this._chat = c;
             });
-            this._initMessages(chatID: c.chatID, messages: messages);
+            this._initMessages(chatID: this._chat.chatID, messages: this._messages);
           },
           onModified: (c) {
             print('CHAT MODIFEID');
@@ -267,8 +290,7 @@ class _MessagesState extends State<Messages> {
         });
   }
 
-  _sendMessage(
-      {String chatID, String messageID, String userID, String type, String msg, ScrollController scrollController}) {
+  _sendMessage({String chatID, String messageID, String userID, String type, String msg, Function onSuccess}) {
     Map<String, dynamic> c = {'type': type, 'message': msg, 'createdAt': DateTime.now(), 'updatedAt': DateTime.now()};
     Map<String, dynamic> m = {
       'user': APIs().users.usersCollection.document(userID),
@@ -287,8 +309,7 @@ class _MessagesState extends State<Messages> {
               ref: APIs().chats.chatsCollection.document(chatID),
               map: c,
               onSuccess: () {
-                print('CHAT UPDATED');
-                scrollController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+                onSuccess();
               },
               onFailure: (e) {
                 print(e);

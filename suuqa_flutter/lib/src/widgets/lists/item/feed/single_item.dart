@@ -43,14 +43,11 @@ class SingleItem extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Hero(
-                tag: this.product.productID,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: Config.borderRadius,
-                    image: DecorationImage(image: NetworkImage(this.product.images.first), fit: BoxFit.fitWidth)
-                  ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: Config.borderRadius,
+                  image: DecorationImage(image: NetworkImage(this.product.images.first), fit: BoxFit.fitWidth)
                 ),
               ),
             ),

@@ -47,14 +47,11 @@ class MultipleItem extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: Hero(
-                        tag: this.product.productID,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            image: DecorationImage(image: NetworkImage(this.product.images[0]), fit: BoxFit.cover),
-                            borderRadius: Config.borderRadius,
-                          ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(image: NetworkImage(this.product.images[0]), fit: BoxFit.cover),
+                          borderRadius: Config.borderRadius,
                         ),
                       ),
                     ),
